@@ -5,7 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
 
-#ceiando classe para window
+#criando classe para window
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
