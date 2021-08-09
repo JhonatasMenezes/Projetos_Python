@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -10,4 +10,9 @@ def raiz():
 def rota2():
     return '<h1>Olá Mundo! Segunda rota!</h1>'
 
-app.run()
+
+@app.route('/pessoas/<string:nome>/<string:cidade>')
+def pessoas(nome,cidade):
+    return jsonify({'nome': nome, 'cidade': cidade})
+    
+app.run(debug=True)
