@@ -10,7 +10,6 @@ def potencia_recursiva_linear(base: int, expoente: int):
         return base * potencia_recursiva_linear(base, expoente - 1)
 
 
-
 if __name__ == '__main__':
     print(potencia_iterativa(2,10))
     print(potencia_recursiva_linear(2,10))
