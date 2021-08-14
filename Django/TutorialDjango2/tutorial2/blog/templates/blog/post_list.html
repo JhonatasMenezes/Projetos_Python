@@ -1,9 +1,18 @@
 {% extends "blog/base.html" %}
+{% load static %}
 
-{% block title %}Meu Blog 🐍{% endblock %}
+{% block title %}Portfólio J. Menezes 🐍{% endblock %}
 
 {% block content %}
+        <h4>Desenvolvedor Python Backend - Oracle Pl/SQL</h4>
+        
+        <img src= "{% static 'css/ImagemGithub.jpg' %}" width="563" alt="github.com/JhonatasMenezes"> <img src="{% static 'css/ImagemLinkedIn.png' %}" width="643" right=True>
+        
+            <p>Na primeira imagem meu repositório remoto do Github, no qual possuo os arquivos completos dos meus projetos e descrevo a experiência, o aprendizado e insights sobre cada projeto no geral. Confira: <a href="github.com/jhonatasmenezes">github.com/jhonatasmenezes</a>.</p>
+            <p>Na segunda imagem meu perfil do Linkedin. Com um breve resumo do meu momento atual em minha carreira e, com informações profissionais mais completas. Confira: <a href="https://www.linkedin.com/in/jhonatas-menezes-494b181a2/">Jhonatas Menezes</a></p>
+        
     {% for post in post_list %}
+        
         <article>
             <h2>
                 <a href="{{ post.get_absolute_url }}">
