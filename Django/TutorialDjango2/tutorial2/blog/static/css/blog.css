@@ -1,0 +1,30 @@
+body {
+    margin: 0 5%;
+    font-family: inherit;
+    font-size: 1.6rem;
+    color: #111111; 
+}
+
+h1 {
+    text-align:end;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    border-bottom: 1px solid #00000057;
+}
+
+h2 {
+    color: #346c91;
+    font-weight: normal;
+    margin-bottom: 1px;
+}
+
+a {
+    color: #346c91;
+    text-decoration: none;
+}
+
+p.date {
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 1px;
+}
