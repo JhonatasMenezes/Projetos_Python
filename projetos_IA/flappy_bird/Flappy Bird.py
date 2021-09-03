@@ -115,7 +115,7 @@ class Passaro:
 class Cano:
     # distancia entre os canos para o passaro poder passar e vel do cano
     DISTANCIA = 140
-    VELOCIDADE = 6
+    VELOCIDADE = 5
     
     # valores iniciais dos canos
     def __init__(self, x):
