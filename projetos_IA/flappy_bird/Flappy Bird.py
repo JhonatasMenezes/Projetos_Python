@@ -8,7 +8,7 @@ import random
 
 # Definindo constantes do game
 TELA_LARGURA = 550
-TELA_ALTURA = 650
+TELA_ALTURA = 670
 # imagem do cano
 IMAGEM_CANO = pg.transform.scale2x(pg.image.load(os.path.join('images', 'pipe.png')))
 # imagem do chão
@@ -55,7 +55,7 @@ class Passaro:
     # calcular deslocamento
     def mover(self):
         self.tempo += 1
-        deslocamento = 1 * (self.tempo**2 + self.velocidade * self.tempo)
+        deslocamento = 0.5 * (self.tempo**2 + self.velocidade * self.tempo)
         
         # restringir deslocamento
         if deslocamento > 15:
@@ -68,13 +68,15 @@ class Passaro:
         # angulo do passaro
         if deslocamento < 0 or self.y < (self.altura + 50):
             if self.angulo < self.ROTACAO_MAXIMA:
-                self.angulo =self.ROTACAO_MAXIMA
+                self.angulo = self.ROTACAO_MAXIMA
         else:
             if self.angulo > -90:
                 self.angulo -= self.VELOCIDADE_ROTACAO
                 
     # definir imagem do passaro ao voar
     def desenhar(self, tela):
+        self.contagem_imagem += 1
+        
         if self.contagem_imagem < self.TEMPO_ANIMACAO:
             self.imagem = self.IMGS[0]
         elif self.contagem_imagem < self.TEMPO_ANIMACAO*2:
@@ -122,7 +124,7 @@ class Cano:
         
     # definir qual altura o proximo cano aparecerá    
     def definir_altura(self):
-        self.altura = random.randrange(45, 400)
+        self.altura = random.randrange(55, 370)
         self.pos_topo = self.altura - self.CANO_TOPO.get_height()
         self.pos_base = self.altura + self.DISTANCIA
         
@@ -141,8 +143,8 @@ class Cano:
         topo_mask = pg.mask.from_surface(self.CANO_TOPO)
         base_mask = pg.mask.from_surface(self.CANO_BASE)
         
-        distancia_topo = (self.x - round(passaro.x), self.pos_topo - round(passaro.y))
-        distancia_base = (self.x - round(passaro.x), self.pos_base - round(passaro.y))
+        distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
+        distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
         
         topo_ponto = passaro_mask.overlap(topo_mask, distancia_topo)
         base_ponto = passaro_mask.overlap(base_mask, distancia_base)
@@ -200,15 +202,13 @@ def desenhar_tela(tela, passaros, canos, chao, pontos):
 def main():
     # definir valores iniciais
     passaros = [Passaro(230, 250)]
-    chao = Chao(610)
+    chao = Chao(600)
     canos = [Cano(650)]
     tela = pg.display.set_mode((TELA_LARGURA, TELA_ALTURA))
     pontos = 0
     relogio = pg.time.Clock()
-    adicionar_cano = False
-    remover_canos = []
-    rodando = True
     # executar o game
+    rodando = True
     while rodando:
         relogio.tick(30)
         
@@ -228,6 +228,8 @@ def main():
         
         chao.mover()
         
+        adicionar_cano = False
+        remover_canos = []
         for cano in canos:
             # eliminar passaro caso colidir 
             for i, passaro in enumerate(passaros):
@@ -239,10 +241,10 @@ def main():
             cano.mover()
             if cano.x + cano.CANO_TOPO.get_width() < 0:
                 remover_canos.append(cano)
-        
+
         if adicionar_cano:
             pontos += 1
-            canos.append(Cano(550))
+            canos.append(Cano(650))
         for cano in remover_canos:
             canos.remove(cano)
         
