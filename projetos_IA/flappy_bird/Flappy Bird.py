@@ -58,8 +58,8 @@ class Passaro:
         deslocamento = 1 * (self.tempo**2 + self.velocidade * self.tempo)
         
         # restringir deslocamento
-        if deslocamento > 14:
-            deslocamento = 14
+        if deslocamento > 15:
+            deslocamento = 15
         elif deslocamento < 0:
             deslocamento -= 2
         
@@ -88,7 +88,7 @@ class Passaro:
             self.contagem_imagem = 0
         
         # se estiver caindo não bater asas
-        if self.angulo <= -80:
+        if self.angulo <= -90:
             self.imagem = self.IMGS[1]
             self.contagem_imagem = self.TEMPO_ANIMACAO*2
             
@@ -141,8 +141,8 @@ class Cano:
         topo_mask = pg.mask.from_surface(self.CANO_TOPO)
         base_mask = pg.mask.from_surface(self.CANO_BASE)
         
-        distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
-        distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
+        distancia_topo = (self.x - round(passaro.x), self.pos_topo - round(passaro.y))
+        distancia_base = (self.x - round(passaro.x), self.pos_base - round(passaro.y))
         
         topo_ponto = passaro_mask.overlap(topo_mask, distancia_topo)
         base_ponto = passaro_mask.overlap(base_mask, distancia_base)
@@ -199,9 +199,9 @@ def desenhar_tela(tela, passaros, canos, chao, pontos):
 # função principal que chama todas as outras
 def main():
     # definir valores iniciais
-    passaros = [Passaro(230, 300)]
+    passaros = [Passaro(230, 250)]
     chao = Chao(610)
-    canos = [Cano(600)]
+    canos = [Cano(650)]
     tela = pg.display.set_mode((TELA_LARGURA, TELA_ALTURA))
     pontos = 0
     relogio = pg.time.Clock()
