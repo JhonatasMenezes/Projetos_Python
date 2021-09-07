@@ -1,3 +1,5 @@
+# Refatoramento do código original na tentativa de melhorar a experiência do leitor
+
 # Jogo Flappy Bird com Inteligencia Artificial.
 # Jogo criado seguindo o tutorial do canal do Youtube Hashtag Programação.
 
@@ -7,57 +9,30 @@ import os
 import random
 import neat
 
+# Módulos separados para melhor entendimento do código 
 from Passaro import Passaro
 from Cano import Cano
+from Chao import Chao
 
-# Definindo constantes da IA
-ia_jogando = False
-geracao = 0
-
-# Definindo constantes do game
+# Definindo constantes
+IA_PLAY = False
+GERACAO = 0
+# tamanho da tela
 TELA_LARGURA = 550
 TELA_ALTURA = 670
-
-# imagem do chão
-IMAGEM_CHAO = pg.transform.scale2x(pg.image.load(os.path.join('images', 'base.png')))
 # imagem do fundo
 IMAGEM_BACKGROUND = pg.transform.scale2x(pg.image.load(os.path.join('images', 'bg.png'))) 
-
 # inicializar as fontes e definir a fonte do jogo
 pg.font.init()
-FONTE_PONTOS = pg.font.SysFont('arial', 50)
-        
+FONTE_PONTOS = pg.font.SysFont('arial', 35)
 
-class Chao:
-    # constantes da base do game
-    VELOCIDADE = 5
-    LARGURA = IMAGEM_CHAO.get_width()
-    IMAGEM = IMAGEM_CHAO
-    
-    # valores iniciais do chao
-    def __init__(self, y):
-        self.y = y
-        self.x1 = 0
-        self.x2 = self.LARGURA
-        
-    # movimento do chao colocando o primeiro após o segundo apos sair da tela
-    def mover(self):
-        self.x1 -= self.VELOCIDADE
-        self.x2 -= self.VELOCIDADE
-        
-        if self.x1 + self.LARGURA < 0:
-            self.x1 = self.x2 + self.LARGURA
-        if self.x2 + self.LARGURA < 0:
-            self.x2 = self.x1 + self.LARGURA
-            
-    # exibir o chao na tela        
-    def desenhar(self, tela):
-        tela.blit(self.IMAGEM, (self.x1, self.y))
-        tela.blit(self.IMAGEM, (self.x2, self.y))        
-    
+
 # exibir toda a tela do game
 def desenhar_tela(tela, passaros, canos, chao, pontos):
+    # gerar background
     tela.blit(IMAGEM_BACKGROUND,(0,0))
+    # gerar base do game
+    chao.desenhar(tela)
     # função que permite vários pássaros no mesmo jogo (possibilita a IA desenvolver mais rápido)
     for passaro in passaros:
         passaro.desenhar(tela)
@@ -68,23 +43,23 @@ def desenhar_tela(tela, passaros, canos, chao, pontos):
     # gerar os texto de pontos e de geração da IA
     texto = FONTE_PONTOS.render(f'Pontuação:{pontos}', 1, (255, 255, 255))
     tela.blit(texto, (TELA_LARGURA - 10 - texto.get_width(), 10))
-    if ia_jogando:
-        texto = FONTE_PONTOS.render(f'Geração:{geracao}', 1, (255, 255, 255))
+    if IA_PLAY:
+        texto = FONTE_PONTOS.render(f'Geração:{GERACAO}', 1, (255, 255, 255))
         tela.blit(texto, (10, 10))
     
-    
-    # gerar base do game
-    chao.desenhar(tela)
     pg.display.update()   
+    
+    
+    
     
 # função principal para chamar todas
 def main(genomas, config):
     # definir valores da IA
-    global geracao 
-    geracao += 1
+    global GERACAO 
+    GERACAO += 1
     
     # definir funções da IA com os pássaros
-    if ia_jogando:
+    if IA_PLAY:
         redes = []
         lista_genomas = []
         passaros = []
@@ -116,7 +91,7 @@ def main(genomas, config):
                 rodando = False
                 pg.quit()
             # possibilitar jogo sem a IA    
-            if not ia_jogando:
+            if not IA_PLAY:
                 if evento.type == pg.KEYDOWN:
                     if evento.key == pg.K_SPACE:
                         for passaro in passaros:
@@ -134,7 +109,7 @@ def main(genomas, config):
         # mover o pássaro e aicionar pontos ao chegar mais longe
         for i, passaro in enumerate(passaros):
             passaro.mover()
-            if ia_jogando:
+            if IA_PLAY:
                 lista_genomas[i].fitness += 0.1
                 output = redes[i].activate((passaro.y, 
                                     abs(passaro.y - canos[indice_cano].altura),
@@ -144,7 +119,7 @@ def main(genomas, config):
         
         chao.mover()
         
-        # variáveis que ajudam a implementar a exclusão de canos de pássaros 
+        # variáveis que ajudam a implementar a exclusão de canos e pássaros 
         adicionar_cano = False
         remover_canos = []
         for cano in canos:
@@ -152,7 +127,7 @@ def main(genomas, config):
             for i, passaro in enumerate(passaros):
                 if cano.colidir(passaro):
                     passaros.pop(i)
-                    if ia_jogando:
+                    if IA_PLAY:
                         lista_genomas[i].fitness -= 1
                         lista_genomas.pop(i)
                         redes.pop(i)
@@ -167,7 +142,7 @@ def main(genomas, config):
         if adicionar_cano:
             pontos += 1
             canos.append(Cano(600))
-            if ia_jogando:
+            if IA_PLAY:
                 for genoma in lista_genomas:
                      genoma.fitness += 5
             else:
@@ -179,7 +154,7 @@ def main(genomas, config):
         for i, passaro in enumerate(passaros):
             if (passaro.y + passaro.imagem.get_height()) > chao.y or passaro.y < 0:
                 passaros.pop(i)
-                if ia_jogando:
+                if IA_PLAY:
                     lista_genomas.pop(i)
                     redes.pop(i)
         
@@ -199,7 +174,7 @@ def rodar(caminho_config):
     populacao.add_reporter(neat.StatisticsReporter())
     
     # chamar função principal sem parâmetros em caso de jogo manual
-    if ia_jogando:
+    if IA_PLAY:
         populacao.run(main, 50)
     else:
         main(None, None)
