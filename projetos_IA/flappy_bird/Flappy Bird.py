@@ -7,158 +7,25 @@ import os
 import random
 import neat
 
+from Passaro import Passaro
+from Cano import Cano
+
 # Definindo constantes da IA
-ia_jogando = True
+ia_jogando = False
 geracao = 0
 
 # Definindo constantes do game
 TELA_LARGURA = 550
 TELA_ALTURA = 670
 
-# imagem do cano
-IMAGEM_CANO = pg.transform.scale2x(pg.image.load(os.path.join('images', 'pipe.png')))
 # imagem do chão
 IMAGEM_CHAO = pg.transform.scale2x(pg.image.load(os.path.join('images', 'base.png')))
 # imagem do fundo
 IMAGEM_BACKGROUND = pg.transform.scale2x(pg.image.load(os.path.join('images', 'bg.png'))) 
-# imagem do pássaro
-IMAGENS_PASSARO = [ 
-    pg.transform.scale2x(pg.image.load(os.path.join('images', 'bird1.png'))),
-    pg.transform.scale2x(pg.image.load(os.path.join('images', 'bird2.png'))),
-    pg.transform.scale2x(pg.image.load(os.path.join('images', 'bird3.png')))
-]
 
 # inicializar as fontes e definir a fonte do jogo
 pg.font.init()
 FONTE_PONTOS = pg.font.SysFont('arial', 50)
-
-
-class Passaro:
-    # definir constantes
-    IMGS = IMAGENS_PASSARO
-    # animaçõesde rotação
-    ROTACAO_MAXIMA = 22
-    VELOCIDADE_ROTACAO = 18
-    TEMPO_ANIMACAO = 5
-    
-    # valores iniciais do passaro
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.angulo = 0
-        self.velocidade = 0
-        self.altura = self.y
-        self.tempo = 0
-        self.contagem_imagem = 0
-        self.imagem = self.IMGS[0]
-    
-    # animação de pular    
-    def pular(self):
-        self.velocidade = -8
-        self.tempo = 0
-        self.altura = self.y
-        
-    # calcular deslocamento
-    def mover(self):
-        self.tempo += 1
-        deslocamento = 0.5 * (self.tempo**2 + self.velocidade * self.tempo)
-        
-        # restringir deslocamento
-        if deslocamento > 15:
-            deslocamento = 15
-        elif deslocamento < 0:
-            deslocamento -= 2
-        
-        self.y += deslocamento
-        
-        # angulo do passaro
-        if deslocamento < 0 or self.y < (self.altura + 50):
-            if self.angulo < self.ROTACAO_MAXIMA:
-                self.angulo = self.ROTACAO_MAXIMA
-        else:
-            if self.angulo > -90:
-                self.angulo -= self.VELOCIDADE_ROTACAO
-                
-    # definir imagem do passaro ao voar
-    def desenhar(self, tela):
-        self.contagem_imagem += 1
-        
-        if self.contagem_imagem < self.TEMPO_ANIMACAO:
-            self.imagem = self.IMGS[0]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*2:
-            self.imagem = self.IMGS[1]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*3:
-            self.imagem = self.IMGS[2]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*4:
-            self.imagem = self.IMGS[1]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*4 + 1:
-            self.imagem = self.IMGS[0]
-            self.contagem_imagem = 0
-        
-        # se estiver caindo não bater asas
-        if self.angulo <= -90:
-            self.imagem = self.IMGS[1]
-            self.contagem_imagem = self.TEMPO_ANIMACAO*2
-            
-        # desenhar a imagem
-        imagem_rotacionada = pg.transform.rotate(self.imagem, self.angulo)
-        pos_centro_imagem = self.imagem.get_rect(topleft=(self.x, self.y)).center
-        retangulo = imagem_rotacionada.get_rect(center=pos_centro_imagem)
-        tela.blit(imagem_rotacionada, retangulo.topleft)
-    
-    # definir uma máscara de pixels para colisões    
-    def get_mask(self):
-        return pg.mask.from_surface(self.imagem)
-                
-                
-
-class Cano:
-    # distancia entre os canos para o passaro poder passar e vel do cano
-    DISTANCIA = 140
-    VELOCIDADE = 5
-    
-    # valores iniciais dos canos
-    def __init__(self, x):
-        self.x = x
-        self.altura = 0
-        self.pos_topo = 0
-        self.pos_base = 0
-        self.CANO_TOPO = pg.transform.flip(IMAGEM_CANO, False, True)
-        self.CANO_BASE = IMAGEM_CANO
-        self.passou = False
-        self.definir_altura()
-        
-    # definir qual altura o proximo cano aparecerá    
-    def definir_altura(self):
-        self.altura = random.randrange(50, 390)
-        self.pos_topo = self.altura - self.CANO_TOPO.get_height()
-        self.pos_base = self.altura + self.DISTANCIA
-        
-    # movimento do cano    
-    def mover(self):
-        self.x -= self.VELOCIDADE
-      
-    # definir imagem do pássaro    
-    def desenhar(self, tela):
-        tela.blit(self.CANO_TOPO, (self.x, self.pos_topo))
-        tela.blit(self.CANO_BASE, (self.x, self.pos_base))
-        
-    # método de colisão  
-    def colidir(self, passaro):
-        passaro_mask = passaro.get_mask()
-        topo_mask = pg.mask.from_surface(self.CANO_TOPO)
-        base_mask = pg.mask.from_surface(self.CANO_BASE)
-        
-        distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
-        distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
-        
-        topo_ponto = passaro_mask.overlap(topo_mask, distancia_topo)
-        base_ponto = passaro_mask.overlap(base_mask, distancia_base)
-        
-        if base_ponto or topo_ponto:
-            return True
-        else:
-            return False
         
 
 class Chao:
@@ -255,7 +122,7 @@ def main(genomas, config):
                         for passaro in passaros:
                             passaro.pular()
         
-        # 
+        # parar o game se não existir mais pássaros
         indice_cano = 0
         if len(passaros) > 0:
             if len(canos) > 1 and passaros[0].x > (canos[0].x + canos[0].CANO_TOPO.get_width()):
@@ -267,12 +134,13 @@ def main(genomas, config):
         # mover o pássaro e aicionar pontos ao chegar mais longe
         for i, passaro in enumerate(passaros):
             passaro.mover()
-            lista_genomas[i].fitness += 0.1
-            output = redes[i].activate((passaro.y, 
-                            abs(passaro.y - canos[indice_cano].altura),
-                            abs(passaro.y - canos[indice_cano].pos_base)))
-            if output[0] > 0.5:
-                passaro.pular()
+            if ia_jogando:
+                lista_genomas[i].fitness += 0.1
+                output = redes[i].activate((passaro.y, 
+                                    abs(passaro.y - canos[indice_cano].altura),
+                                    abs(passaro.y - canos[indice_cano].pos_base)))
+                if output[0] > 0.5:
+                    passaro.pular()
         
         chao.mover()
         
@@ -299,8 +167,11 @@ def main(genomas, config):
         if adicionar_cano:
             pontos += 1
             canos.append(Cano(600))
-            for genoma in lista_genomas:
-                genoma.fitness += 5
+            if ia_jogando:
+                for genoma in lista_genomas:
+                     genoma.fitness += 5
+            else:
+                pass
         for cano in remover_canos:
             canos.remove(cano)
         
