@@ -1,12 +1,14 @@
 💭💭Contratação💭💭  
 
-Utilizando orientação a objetos criar uma aplicação que insira uma pessoa em uma lista e valide os dados da pessoa.
-A estrutura que representará a pessoa deve possuir os seguintes atributos:
+Utilizando orientação a objetos criar uma aplicação que insira 
+uma pessoa em uma lista e valide os dados da pessoa.
 
-Nome
-Sobrenome
-CPF
-Data de Nascimento
+A estrutura que representará a pessoa deve possuir os seguintes atributos:
+- Nome
+- Sobrenome
+- CPF
+- Data de Nascimento
+
 As seguintes regras devem ser observadas:
 
 Todas as informações são obrigatórias.
