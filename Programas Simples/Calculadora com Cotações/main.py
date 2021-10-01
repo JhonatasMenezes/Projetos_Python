@@ -58,6 +58,9 @@ class App:
             if evento in ('Sobre'):
                 self.about()
             
+            if evento in ('Sair'):
+                self.sair()
+            
             if evento in self.numEvento.keys():
                 self.janela['entrada'].update(value=self.valores['entrada'] + str(self.numEvento[evento]))
             
