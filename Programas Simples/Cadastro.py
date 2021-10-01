@@ -1,4 +1,3 @@
-from typing import Sized
 from PySimpleGUI import PySimpleGUI as sg
 
 # Layout
