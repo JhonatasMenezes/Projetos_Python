@@ -9,7 +9,7 @@ Contém funções de textos coloridos no terminal, uma função de menu
 e uma função que calcula a idade conforme a data de nascimento e a data atual.
 """
 
-def mensagemTopo(mensagem, inicio=False):
+def mensagemTopo(mensagem, inicio=False, tamanho=35):
     """
     Função que gera um cabeçalho formatado e dependendo do parâmetro 'inicio',
     limpa as informações anteriores do terminal, para uma melhor apresentação.
@@ -20,9 +20,9 @@ def mensagemTopo(mensagem, inicio=False):
     if inicio == True:
         os.system('cls')
     mensagem = str(mensagem)
-    linhaUnica()
-    print(mensagem.center(35))
-    linhaUnica()
+    linhaUnica(tamanho)
+    print(mensagem.center(tamanho))
+    linhaUnica(tamanho)
     
     
 def linhaUnica(tamanho=35):

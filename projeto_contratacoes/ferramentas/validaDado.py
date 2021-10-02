@@ -46,7 +46,7 @@ def validaNome(mensagem='Nome: '):
             # após passar por todos os filtros é retornado o nome em forma de string
             return nome
 
-def validaCPF(mensagem='CPF: '):
+def validaCPF(mensagem='CPF (somente números): '):
     """
     Função que valida CPFs de forma a verificar se todos
     os caracteres são numéricos e se não contém outros 
