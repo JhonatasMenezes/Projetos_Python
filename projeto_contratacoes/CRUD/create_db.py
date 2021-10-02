@@ -41,7 +41,8 @@ def criarTabela():
         [
             Vagas,
             Candidatos
-        ]
+        ], safe=True
     )
     db.close()
 
+criarTabela() 

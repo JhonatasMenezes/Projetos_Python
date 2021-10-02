@@ -1,18 +1,27 @@
 from ferramentas.utilidades import idade, mensagemTopo
 from CRUD.manipulacao_dados import *
+from CRUD.create_db import Candidatos
  
-
+"""
+Criada a classe Candidato para receber os dados do candidato
+no momento de cadastro e possibilitar a persistência dos dados
+no Banco de Dados.
+"""
 
 class Candidato:
+    # Atributos
     def __init__(self, pessoa:dict):
         self.dados = {}
         self.dados['nome'] = pessoa['nome']
-        self.dados['sobrenomenome'] = pessoa['sobrenome']
+        self.dados['sobrenome'] = pessoa['sobrenome']
         self.dados['CPF'] = pessoa['CPF']
         self.dados['dataNascimento'] = pessoa['dataNascimento']
+        self.addIdade()
         self.dados['vaga'] = pessoa['vaga']
-
     
+    def retornarDados(self):
+        return self.dados
+    # Função que irá calcular a idade
     def addIdade(self):
         self.dados['idade'] = idade(self.dados['dataNascimento'])
         
@@ -26,20 +35,6 @@ class Candidato:
             print(f"{v}".center(14),'|',end=' ')
         print('\n','-'*((6*17)-2))
     
-    def inserirDados(self, *pessoas:dict):
-        
-    
-    
-    
-    
-pessoa = {
-    'nome': 'Jhonatas',
-    'sobrenome': 'Menezes',
-    'CPF': '46681125859',
-    'dataNascimento': '12/02/1997',
-    'vaga': 'Programador'    
-}
-
-candidato = Candidato(pessoa)
-candidato.addIdade()
-candidato.dadosCandidato()
+    def inserirDados(self):
+        inserir(self.dados,tabela='Candidato')
+  
