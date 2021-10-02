@@ -1,13 +1,12 @@
-import datetime
-from dateutil.relativedelta import relativedelta
-from Modulos.utilidades import textoCor
+# Importando uma função que muda cor de textos no terminal, criada em outro arquivo
+from utilidades import textoCor
 
 """
 Módulo de funções para validação de alguns dados como Nomes, CPFs e Datas de nascimento.
 
 NOTA: Todas as funções são parecidas e utilizam o mesmo princípio. 
 Irei comentar detalhadamente apenas a primeira e, em caso de peculiaridades,
-farei comentários subjetivos a sua respectiva função.
+farei comentários isolados na respectiva função.
 """
 
 def validaNome(mensagem='Nome: '):
@@ -16,6 +15,7 @@ def validaNome(mensagem='Nome: '):
     os caracteres são letras e não outros tipos de dados.
     
     :param mensagem: recebe uma mensagem que aparece no input
+    :return nome: retorna o nome em forma de str
     """
     # loop para permitir nova inserção após um erro
     while True:
@@ -36,6 +36,7 @@ def validaNome(mensagem='Nome: '):
             nome = ' '.join(nome)
         # tratamento de erros    
         except ValueError:
+            # emitir os avisos de erro na cor vermelha
             textoCor('Tipo de dado inválido. Tente novamente!', 31)
         except KeyboardInterrupt:
             textoCor('Informação obrigatória. Impossível prosseguir!', 31)
@@ -54,6 +55,7 @@ def validaCPF(mensagem='CPF: '):
     validar CPFs maiores ou menores do que 11 números.
     
     :param mensagem: recebe uma mensagem que aparece no input
+    :return cpf: retorna cpf em formato str
     """
     while True:
         try:
@@ -61,7 +63,8 @@ def validaCPF(mensagem='CPF: '):
             cpf = list(cpf.strip(''))
             if cpf == []:
                 raise KeyboardInterrupt
-            else:    
+            else:
+                # checar se cada digito é um número  
                 for i in cpf:
                     if i.isnumeric():
                         pass
@@ -90,7 +93,11 @@ def validaNascimento(mensagem='Data nasc. (DD/MM/AAAA): '):
     Também verifica se o dia, mês e ano estão dentro dos limites válidos.
     
     :param mensagem: recebe uma mensagem que aparece no input
+    :return data: retorna data em formato str
     """
+    # variável que facilita a mudança do ano atual
+    anoAtual = 2021
+    
     while True:
         try:
             data = str(input(mensagem))
@@ -103,11 +110,12 @@ def validaNascimento(mensagem='Data nasc. (DD/MM/AAAA): '):
                         pass
                     else:
                         raise ValueError
+                # utilizo dos índices para verificar cada dado
                 if int(data[0]) > 31:
                     raise Exception('Dia')
                 if int(data[1]) > 12:
                     raise Exception('Mês')
-                if int(data[2]) > 2021:
+                if int(data[2]) > anoAtual:
                     raise Exception('Ano')
             data = '/'.join(data)  
                                   
@@ -122,22 +130,3 @@ def validaNascimento(mensagem='Data nasc. (DD/MM/AAAA): '):
         else:
             return data
 
-
-def idade(dataNasc:str):
-    """
-    Função que determina a idade em anos, à partir de uma data informada 
-    no formato string.
-    
-    :param dataNasc: uma data no formato 'DD/MM/AAAA'
-    """
-    # dividir as informações em uma lista
-    dataNasc = dataNasc.split('/')
-    # transformar os dados em uma data
-    data = datetime.date(int(dataNasc[2]),int(dataNasc[1]),int(dataNasc[0]))
-    # pegar data atual
-    atual = datetime.datetime.utcnow()
-    atual = atual.date()
-    # calcular diferença de anos entre as datas
-    idade = relativedelta(atual, data)
-    idade = idade.years
-    return idade
