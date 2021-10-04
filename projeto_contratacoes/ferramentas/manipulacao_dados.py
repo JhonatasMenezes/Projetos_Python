@@ -1,9 +1,12 @@
+from copy import Error
+from peewee import IntegrityError
 from .create_db import Candidatos, Vagas, db
 from .utilidades import textoCor
 from time import sleep
 
 # Módulo criado para ajudar nas atividades junto ao Banco de Dados
-
+maxVagas = 5
+cadidatosPorVaga = 3
 
 def inserir(dado, tabela):
     """
@@ -16,10 +19,20 @@ def inserir(dado, tabela):
     """
     if tabela == 'Vagas':
         try:
+            numVagas = Vagas.select()
+            cont = 0
+            for linha in numVagas:
+                cont += 1
+            if cont >= maxVagas:
+                raise Exception
             tab = Vagas.create(vaga=dado)
             tab.save()
+        except Exception:
+            textoCor('Número máximo de vagas ja cadasradas!', 31)
+            sleep(3)
         except:
             textoCor('Erro! Tente Novamente.',31)
+            sleep(3)
         else:
             textoCor(f'Vaga {dado} salva com sucesso!',32)
             sleep(3)
@@ -27,21 +40,54 @@ def inserir(dado, tabela):
     elif tabela == 'Candidatos':
         try:
             if type(dado) == list:
+                naoCadastrado = []
+                totalNaoCadastrado = 0
                 for cada in dado:
-                    tab = Candidatos.create(nome=cada['nome'], sobrenome=cada['sobrenome'],
-                                            CPF=cada['CPF'], data_nascimento=cada['dataNascimento'],
-                                            idade=cada['idade'], vaga=cada['vaga'])
+                    numCandidatosVaga = Candidatos.select().where(Candidatos.vaga==cada['vaga'])
+                    candidatosCadastrados = 0
+                    for row in numCandidatosVaga:
+                        candidatosCadastrados += 1
+                    if candidatosCadastrados <= 2:
+                        tab = Candidatos.create(nome=cada['nome'], sobrenome=cada['sobrenome'],
+                                                CPF=cada['CPF'], data_nascimento=cada['dataNascimento'],
+                                                idade=cada['idade'], maior=cada['maior'], vaga=cada['vaga'])
+                    else:
+                        naoCadastrado.append(cada)
+                        totalNaoCadastrado += 1
+                        pass  
+                resp = len(dado) - totalNaoCadastrado
             else:
-                tab = Candidatos.create(nome=dado['nome'], sobrenome=dado['sobrenome'],
-                                        CPF=dado['CPF'], data_nascimento=dado['dataNascimento'],
-                                        idade=dado['idade'], vaga=dado['vaga'])
-            tab.save()
+                numCandidatosVaga = Candidatos.select().where(Candidatos.vaga==dado['vaga'])
+                candidatosCadastrados = 0
+                for row in numCandidatosVaga:
+                    candidatosCadastrados += 1
+                if candidatosCadastrados <= 2:
+                    tab = Candidatos.create(nome=dado['nome'], sobrenome=dado['sobrenome'],
+                                            CPF=dado['CPF'], data_nascimento=dado['dataNascimento'],
+                                            idade=dado['idade'], maior=dado['maior'], vaga=dado['vaga'])
+                    resp = 1
+                    tab.save()
+                else:
+                    raise Error
+        except Error:
+            textoCor('Máximo de 3 candidatos já registrados para essa vaga!',31)
+            sleep(3)
+        except IntegrityError:
+            textoCor('CPF já registrado!',31)
+            textoCor('Candidato não inserido!',31)
+            sleep(3)
         except Exception as e:
             textoCor(e,31)
+            textoCor('Candidato não inserido!',31)
+            sleep(3)
         except:
             textoCor("Erro! Tente novamente.",31)
         else:
-            textoCor(f"{len(dado)} candidato(s) salvo com sucesso!",32)
+            if len(naoCadastrado) > 0:
+                for cada in range(0, len(naoCadastrado)):
+                    textoCor(f"O candidato {naoCadastrado[cada]['nome']} não pode ser cadastrado.",31)
+                    textoCor('Motivo: Número de candidatos por vaga excedido!',31)
+            textoCor(f"{resp} candidato(s) salvo com sucesso!",32)
             sleep(3)
 
 
@@ -119,4 +165,3 @@ def deletar(id, tabela):
         else:
             textoCor(f'Candidato {id} deletado com sucesso!',32)
             sleep(3)
-

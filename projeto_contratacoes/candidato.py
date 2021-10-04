@@ -21,19 +21,24 @@ class Candidato:
     
     def retornarDados(self):
         return self.dados
-    # Função que irá calcular a idade
+        
+    # Função que irá calcular a idade e se a pessoa é maior ou não
     def addIdade(self):
         self.dados['idade'] = idade(self.dados['dataNascimento'])
+        if self.dados['idade'] >= 18:
+            self.dados['maior'] = 'S'
+        else:
+            self.dados['maior'] = 'N'
         
-        
-    def dadosCandidato(self):
-        mensagemTopo(f"Esses são os dados de {self.dados['nome']}", inicio=True, tamanho=((6*17)-2))
+    def dadosCandidato(self,inicio=True):
+        mensagemTopo(f"Esses são os dados de {self.dados['nome']}", inicio=inicio, tamanho=((6*17)-2))
         for k in self.dados.keys():
-            print(f"{k}".center(14),'|',end=' ')
-        print('\n','-'*((6*17)-2))
+            print(f"{k}".center(12),'|',end=' ')
+        print('\n','-'*((6*18)-2))
         for v in self.dados.values():
-            print(f"{v}".center(14),'|',end=' ')
-        print('\n','-'*((6*17)-2))
+            print(f"{v}".center(12),'|',end=' ')
+        print('\n','-'*((6*18)-2))
     
     def inserirDados(self):
-        inserir(self.dados,tabela='Candidato')
+        inserir(self.dados,tabela='Candidatos')
+

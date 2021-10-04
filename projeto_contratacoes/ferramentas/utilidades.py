@@ -41,7 +41,7 @@ def textoCor(texto,cor=37,end=False, retorno=False):
     
     :param texto: texto a ser exibido
     :param cor: cor do texto de acordo com tabela ANSI
-    :param end: utilizao padrão do comando print(), mas pode ser alterado em parâmetro
+    :param end: utiliza o padrão do comando print(), mas pode ser alterado em parâmetro
     :param retorno: quando True, retorna uma string e não um comando print().
     """
     if end == False:
@@ -72,6 +72,7 @@ def menu(opcoes:list, principal=False):
         menu = 'MENU PRINCIPAL'
     
     while True:
+        os.system('cls')
         print('-'*35)
         print(menu.center(35))
         print('-'*35)
@@ -108,3 +109,12 @@ def idade(dataNasc:str):
     idade = relativedelta(atual, data)
     idade = idade.years
     return int(idade)
+
+def carragando():
+    string = '........'
+    string = string.strip()
+    print('Carregando', end=' ')
+    for c in string:
+        print(c, end=' ')
+        time.sleep(0.3)
+        

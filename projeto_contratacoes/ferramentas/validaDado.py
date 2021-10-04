@@ -1,4 +1,5 @@
 # Importando uma função que muda cor de textos no terminal, criada em outro arquivo
+from ferramentas.create_db import Vagas
 from .utilidades import textoCor
 
 """
@@ -71,9 +72,9 @@ def validaCPF(mensagem='CPF (somente números): '):
                     else:
                         raise ValueError
             if len(cpf) > 11 or len(cpf) < 11:
-                    raise Exception('Tamanho inválido')
+                    raise Exception
             cpf = ''.join(cpf)
-                                                     
+                                                
         except ValueError:
             textoCor('Tipo de dado inválido. Tente novamente!', 31)
         except KeyboardInterrupt:
@@ -129,4 +130,49 @@ def validaNascimento(mensagem='Data nasc. (DD/MM/AAAA): '):
             textoCor('Erro desconhecido. Tente novamente!', 31)
         else:
             return data
+
+
+def validaVaga(mensagem='Vaga: ',inserir=False,vagaNome=str):
+    """
+    Função que valida vagas de forma a verificar se a vaga
+    existe na base de dados, sendo impossível adicionar um
+    candidato relacionado a uma vaga inexistente.
+    
+    :param mensagem: recebe uma mensagem que aparece no input
+    :return vaga: retorna vaga em formato str
+    """
+    while True:
+        vaga = ''
+        try:
+            if inserir == False:
+                vaga = str(input(mensagem))
+                validar = Vagas.select()
+                for row in validar:
+                    if vaga == row.vaga or int(vaga) == row.id:
+                        existe = True
+                        return vaga
+                    else:
+                        existe = False
+                if existe:
+                    pass
+                else:
+                    raise Exception                        
+            else:
+                validar = Vagas.select()
+                for row in validar:
+                    if vagaNome == row.vaga:
+                        return True
+                    else:
+                        return False
+
+        except ValueError:
+            textoCor('Tipo de dado inválido. Tente novamente!', 31)
+        except KeyboardInterrupt:
+            textoCor('Informação obrigatória. Impossível prosseguir!', 31)
+        except Exception:
+            textoCor('Vaga não encontrada!', 31)
+        except:
+            textoCor('Erro desconhecido. Tente novamente!')
+        else:
+            return vaga
 

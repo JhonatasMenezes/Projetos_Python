@@ -30,6 +30,7 @@ class Candidatos(BaseModel):
     CPF = CharField(max_length=11,unique=True)
     data_nascimento =CharField(max_length=10)
     idade = IntegerField()
+    maior = CharField(constraints=[Check("maior in ('S','N')")])
     vaga = ForeignKeyField(Vagas)
 
 
