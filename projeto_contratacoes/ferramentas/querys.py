@@ -1,5 +1,5 @@
 import os
-from CRUD.create_db import Candidatos, Vagas, db
+from .create_db import Candidatos, Vagas, db
 
 def consultaTabela(todos=False,id=1,tabela='Candidatos'):
     if not todos:
@@ -33,4 +33,4 @@ def consultaTabela(todos=False,id=1,tabela='Candidatos'):
             for dado in consulta:
                 print(dado.id,' | ',dado.vaga)
 
-consultaTabela(tabela='Vagas')
+consultaTabela(todos=True)

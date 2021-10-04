@@ -1,5 +1,5 @@
-from CRUD.create_db import Candidatos, Vagas, db
-from ferramentas.utilidades import textoCor
+from .create_db import Candidatos, Vagas, db
+from .utilidades import textoCor
 from time import sleep
 
 # Módulo criado para ajudar nas atividades junto ao Banco de Dados

@@ -1,5 +1,5 @@
 # Importando uma função que muda cor de textos no terminal, criada em outro arquivo
-from utilidades import textoCor
+from .utilidades import textoCor
 
 """
 Módulo de funções para validação de alguns dados como Nomes, CPFs e Datas de nascimento.

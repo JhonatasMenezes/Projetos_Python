@@ -1,6 +1,6 @@
 from ferramentas.utilidades import idade, mensagemTopo
-from CRUD.manipulacao_dados import *
-from CRUD.create_db import Candidatos
+from ferramentas.manipulacao_dados import *
+from ferramentas.create_db import Candidatos
  
 """
 Criada a classe Candidato para receber os dados do candidato
