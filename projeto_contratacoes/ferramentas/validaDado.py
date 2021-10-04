@@ -137,6 +137,8 @@ def validaVaga(mensagem='Vaga: ',inserir=False,vagaNome=str):
     Função que valida vagas de forma a verificar se a vaga
     existe na base de dados, sendo impossível adicionar um
     candidato relacionado a uma vaga inexistente.
+    Se usada no momento de inserir uma nova vaga, retorna True
+    para uma vaga existente e False para não existência.
     
     :param mensagem: recebe uma mensagem que aparece no input
     :return vaga: retorna vaga em formato str

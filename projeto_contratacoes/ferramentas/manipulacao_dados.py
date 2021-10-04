@@ -5,8 +5,13 @@ from .utilidades import textoCor
 from time import sleep
 
 # Módulo criado para ajudar nas atividades junto ao Banco de Dados
+# mesmo não sendo necessária a implementação das funções 'Atualizar' 
+# e 'Deletar', me propus fazê-las para ganhar experiência no processo
+# de interação com o BD.
+
+# Valores que podem ser definidos mais facilmente dependendo do cenário
 maxVagas = 5
-cadidatosPorVaga = 3
+candidatosPorVaga = 3
 
 def inserir(dado, tabela):
     """
@@ -17,6 +22,7 @@ def inserir(dado, tabela):
     :param dado: recebe dicionário ou lista de dicionários
     :param tabela: recebe str com o nome da tabela a ser inserida
     """
+    # inserção na tabela Vagas
     if tabela == 'Vagas':
         try:
             numVagas = Vagas.select()
@@ -36,22 +42,27 @@ def inserir(dado, tabela):
         else:
             textoCor(f'Vaga {dado} salva com sucesso!',32)
             sleep(3)
-            
+     
+    # inserção na tabela Candidatos        
     elif tabela == 'Candidatos':
         try:
             if type(dado) == list:
                 naoCadastrado = []
                 totalNaoCadastrado = 0
+                # no momento da inserção, irá analisar se a vaga já possúi o n° máximo de candidatos
                 for cada in dado:
                     numCandidatosVaga = Candidatos.select().where(Candidatos.vaga==cada['vaga'])
                     candidatosCadastrados = 0
                     for row in numCandidatosVaga:
                         candidatosCadastrados += 1
-                    if candidatosCadastrados <= 2:
+                    if candidatosCadastrados <= (candidatosPorVaga-1):
                         tab = Candidatos.create(nome=cada['nome'], sobrenome=cada['sobrenome'],
                                                 CPF=cada['CPF'], data_nascimento=cada['dataNascimento'],
                                                 idade=cada['idade'], maior=cada['maior'], vaga=cada['vaga'])
                     else:
+                        # no caso de inserir mais de 1 candidato, o programa permite adicionar
+                        # os candidatos que estão aptos de acordo com o n° de candidatos por vaga
+                        # e não adiciona os que não estão aptos
                         naoCadastrado.append(cada)
                         totalNaoCadastrado += 1
                         pass  
@@ -61,7 +72,7 @@ def inserir(dado, tabela):
                 candidatosCadastrados = 0
                 for row in numCandidatosVaga:
                     candidatosCadastrados += 1
-                if candidatosCadastrados <= 2:
+                if candidatosCadastrados <= (candidatosPorVaga-1):
                     tab = Candidatos.create(nome=dado['nome'], sobrenome=dado['sobrenome'],
                                             CPF=dado['CPF'], data_nascimento=dado['dataNascimento'],
                                             idade=dado['idade'], maior=dado['maior'], vaga=dado['vaga'])
@@ -83,6 +94,7 @@ def inserir(dado, tabela):
         except:
             textoCor("Erro! Tente novamente.",31)
         else:
+            # no caso de candidatos com vagas ja preenchidas, será retornada essa mensagem
             if len(naoCadastrado) > 0:
                 for cada in range(0, len(naoCadastrado)):
                     textoCor(f"O candidato {naoCadastrado[cada]['nome']} não pode ser cadastrado.",31)

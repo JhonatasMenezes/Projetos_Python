@@ -1,3 +1,9 @@
+# Dividi os requisitos em partes para poder trabalhar cada uma com foco em suas necessidades
+e características. No decorrer do programa, fui marcando com um 'OK' cada etapa concluídaCPF.
+# Irei manter esse arquivo no repositório do projeto para facilitar o entendimento por outras pessoas que, 
+por ventura, vizualizem o projeto. 
+
+
 💭💭Contratação💭💭  
 
 Utilizando orientação a objetos criar uma aplicação que insira 

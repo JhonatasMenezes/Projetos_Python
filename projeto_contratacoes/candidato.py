@@ -19,6 +19,8 @@ class Candidato:
         self.addIdade()
         self.dados['vaga'] = pessoa['vaga']
     
+    # Função que retorna os dados em forma de dicionário para 
+    # permitir que mais de 1 candidato seja adicionado de 1 só vez
     def retornarDados(self):
         return self.dados
         
@@ -30,6 +32,8 @@ class Candidato:
         else:
             self.dados['maior'] = 'N'
         
+    # Função que mostra todos os dados dos candidatos, usei ela 
+    # para mostrar os dados antes da confirmação SALVAR
     def dadosCandidato(self,inicio=True):
         mensagemTopo(f"Esses são os dados de {self.dados['nome']}", inicio=inicio, tamanho=((6*17)-2))
         for k in self.dados.keys():
@@ -39,6 +43,8 @@ class Candidato:
             print(f"{v}".center(12),'|',end=' ')
         print('\n','-'*((6*18)-2))
     
+    # No caso de apenas 1 candidato, a classe possúi essa função 
+    # que permite já inserir os dados no BD.
     def inserirDados(self):
         inserir(self.dados,tabela='Candidatos')
 

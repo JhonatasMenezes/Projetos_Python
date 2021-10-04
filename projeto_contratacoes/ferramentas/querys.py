@@ -1,7 +1,22 @@
 import os
-from .create_db import Candidatos, Vagas, db
+from .create_db import Candidatos, Vagas
+
+"""
+Módulo criado para permitir a vizualização dos dados das tabelas e
+tornar o programa principal mais interativo e completo.
+"""
+
 
 def consultaTabela(todos=False,id=1,tabela='Candidatos'):
+    """
+    Função que efetua uma busca na tabela passada por parâmetro e
+    retorna os dados formatados no terminal.
+    
+    :param todos: no caso de True, retorna todos os registros da tabela
+    :param id: necessário para mostrar uma linha específica
+    :param tabela: recebe o nome da tabela a ser buscada
+    """
+    # Consulta de todos os dados da tabela
     if not todos:
         if tabela == 'Candidatos':
             consulta = Candidatos.select().where(Candidatos.id==id)
@@ -17,6 +32,8 @@ def consultaTabela(todos=False,id=1,tabela='Candidatos'):
             print('-'*20)
             for dado in consulta:
                 print(dado.id,' | ',dado.vaga)
+   
+    # Consulta de uma linha específica
     else:
         if tabela == 'Candidatos':
             os.system("cls")

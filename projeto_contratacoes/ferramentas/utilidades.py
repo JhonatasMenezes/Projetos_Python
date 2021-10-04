@@ -5,8 +5,9 @@ import datetime
 
 """
 Módulo que criei com algumas funcionalidades úteis no dia a dia.
-Contém funções de textos coloridos no terminal, uma função de menu 
-e uma função que calcula a idade conforme a data de nascimento e a data atual.
+Contém funções de textos coloridos no terminal, uma função de menu, uma função
+que simula o carregamento do sistema e uma função que calcula uma idade conforme a 
+data de nascimento e a data atual.
 """
 
 def mensagemTopo(mensagem, inicio=False, tamanho=35):
@@ -111,6 +112,11 @@ def idade(dataNasc:str):
     return int(idade)
 
 def carragando():
+    """
+    Função que retorna uma pequena "animação" que simula
+    o carregamento do sistema. Fiz para parecer mais agradável
+    ao usuário. :)
+    """
     string = '........'
     string = string.strip()
     print('Carregando', end=' ')
