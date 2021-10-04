@@ -16,19 +16,16 @@ def inserir(dado, tabela):
     """
     if tabela == 'Vagas':
         try:
-            db.connect()
             tab = Vagas.create(vaga=dado)
             tab.save()
         except:
             textoCor('Erro! Tente Novamente.',31)
         else:
-            db.close()
             textoCor(f'Vaga {dado} salva com sucesso!',32)
             sleep(3)
             
     elif tabela == 'Candidatos':
         try:
-            db.connect()
             if type(dado) == list:
                 for cada in dado:
                     tab = Candidatos.create(nome=cada['nome'], sobrenome=cada['sobrenome'],
@@ -44,7 +41,6 @@ def inserir(dado, tabela):
         except:
             textoCor("Erro! Tente novamente.",31)
         else:
-            db.close()
             textoCor(f"{len(dado)} candidato(s) salvo com sucesso!",32)
             sleep(3)
 
@@ -61,19 +57,16 @@ def atualizar(id,campo,dado,tabela):
     dado = str(dado)
     if tabela == 'Vagas':
         try:
-            db.connect()
             tab = Vagas.get(Vagas.id == id)
             tab.vaga = dado
             tab.save()
         except:
             textoCor('Erro! Tente novamente.',31)
         else:
-            db.close()
             textoCor(f'Vaga {id} atualizada com sucesso!',32)
             sleep(3)
     if tabela == 'Candidatos':
         try:
-            db.connect()
             tab = Candidatos.get(Candidatos.id == id)       
             if campo == 'nome':
                 tab.nome = dado
@@ -93,7 +86,6 @@ def atualizar(id,campo,dado,tabela):
         except:
             textoCor('Erro! Tente novamente.',31)
         else:
-            db.close()
             textoCor(f"Usuário {id} atualizado com sucesso!",32)
             sleep(3)
             
@@ -108,19 +100,16 @@ def deletar(id, tabela):
     """
     if tabela == 'Vagas':
         try:
-            db.connect()
             tab = Vagas.get(Vagas.id == id)            
             tab.delete_instance()
         except:
             textoCor('Erro! Tente Novamente.',31)
         else:
-            db.close()
             textoCor(f'Vaga "{id}" deletada com sucesso!',32)
             sleep(3)
             
     elif tabela == 'Candidatos':
         try:
-            db.connect()
             tab = Candidatos.get(Candidatos.id == id)
             tab.delete_instance()
         except Exception as e:
@@ -128,7 +117,6 @@ def deletar(id, tabela):
         except:
             textoCor("Erro! Tente novamente.",31)
         else:
-            db.close()
             textoCor(f'Candidato {id} deletado com sucesso!',32)
             sleep(3)
 

@@ -37,4 +37,3 @@ class Candidato:
     
     def inserirDados(self):
         inserir(self.dados,tabela='Candidato')
-  
