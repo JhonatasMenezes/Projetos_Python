@@ -1,5 +1,6 @@
 # Projeto Contratações em Python 👔
 ### Uma solução de CRUD para um processo seletivo com candidatos relacionados à vagas.
+#### Tecnologias usadas: Python 🐍, Peewee ⚙️, SQLite 🗃️.
 ---
 Aqui deixo alguns de meus insights sobre o processo e conclusão do projeto.
 
