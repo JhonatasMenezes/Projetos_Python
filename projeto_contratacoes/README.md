@@ -12,7 +12,9 @@ a interação entre um script e um BD torna o uso real de um programa muito mais
 no arquivo .txt eu precisava adicionar as informações separando-as por ' ; ' para poder recuperar mais tarde, porém, isso só serviria para informações muito bem
 especificadas e limitadas, não poderia, por exemplo, definir uma PrimaryKey ou uma outra constraint de inserção. Já com o uso de um banco de dados, eu só preciso
 definir os moldes uma vez no início do desenvolvimento e isso vai me atender de forma muito mais abrangente, possibilitando até modificar com facilidade alguma
-funcionalidade ou 'regra de negócio' devido ao uso de um ORM, como o Peewee que usei nesse projeto.
+funcionalidade ou 'regra de negócio' devido ao uso de um ORM, como o Peewee que usei nesse projeto. Não podendo esquecer, do tratamento de erros para praticamente 
+todas as funcionalidade que envolvem a interação com usuário, que me pareceram muito agradáveis no resultado final, permitindo errar, avisando sobre o erro e dando
+chance de consertar o erro cometido.
  
  Foram 3 dias de 'trabalho', pesquisa e desenvolvimento de novas skills. Pode parecer pouco, mas como eu já venho em uma constante de estudo intenso, foi tranquilo 
 passar bastante tempo focado na resolução desse problema.
