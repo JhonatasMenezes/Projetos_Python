@@ -1,0 +1,3 @@
+# Aplcicativo de Delivery (iFood, Rappi...)
+
+Começar instalando o virtual environment e de início o Flask.
