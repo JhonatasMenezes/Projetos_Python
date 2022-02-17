@@ -6,9 +6,6 @@ import os
 
 class Ferramentas:
     """
-    Uso de orientação à objeto para isolar responsabilidades e evitar
-    código demasiado em locais desnecessários.
-
     Conjunto de 'ferramentas' úteis para o desenvolvimento do projeto e funções
     que utilizo muitas vezes no código, evitando hardcode.
     """

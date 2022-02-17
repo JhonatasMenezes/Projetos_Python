@@ -1,12 +1,15 @@
 import time
-
 from ferramentas import Ferramentas
 from onibus import Onibus
 
 
 class Interacao:
     """
-    Classe responsável por executar toda a interação com o usuário.
+    Responsável por executar as funções de menu e permitir
+    que o usuário interaja com o programa em execução.
+    Todos os menus são executados com a função while, e recebem
+    a escolha de uma das opções, que por sua vez retorna uma ação
+    ou encaminha o usuário para outro menu.
     """
     def __init__(self):
         self.tools = Ferramentas()

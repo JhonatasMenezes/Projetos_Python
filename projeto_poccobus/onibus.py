@@ -5,6 +5,12 @@ from ferramentas import Ferramentas
 
 
 class Onibus:
+    """
+    Responsável por todos os atributos e métodos relacionados exclusivamente
+    ao Ônibus representado no programa. Gerar os assentos, ocupar algum assento,
+    cancelar uma reserva de assento, entre outros, são alguns dos
+    métodos presentes nesta calsse.
+    """
     def __init__(self, lugares=40):
         self.colunas = 5
         self.linhas = int(lugares/self.colunas)
@@ -95,7 +101,8 @@ class Onibus:
 
     def mostrar_assentos(self):
         """ 
-        Mostra os assentos em disposição tabular. 
+        Mostra os assentos em disposição tabular no 
+        terminal de saída. 
         """
         if len(self.assentos) == 8:
             os.system('cls')
@@ -124,6 +131,11 @@ class Onibus:
 
 
     def gerar_relatório(self):
+        """
+        Escreve os dados da instância atual da classe no
+        documento 'Relatório_passagens.txt' no mode 'a' (append),
+        gerando assim uma espécie de log de compras e reservas.
+        """
         if self.linhas == 16:
             tipo_onibus = 'Ônibus 2 andares'
         elif self.linhas == 8:

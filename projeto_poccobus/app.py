@@ -14,6 +14,10 @@ class App:
         self.interacao = Interacao()
 
     def executar(self):
+        """
+        Inicia o programa e chama a função de menu principal
+        que está ligado a todos os outros menus na classe interação.
+        """
         os.system('cls')  
         self.tools.mensagemTopo(self.tools.textoCor('INICIANDO PROGRAMA DE VIAGENS',cor=36,retorno=True), inicio=True, tamanho=40)
         sleep(2)
